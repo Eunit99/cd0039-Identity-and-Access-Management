@@ -55,8 +55,7 @@ def get_token_auth_header():
         )
     elif len(parts) == 1:
         raise AuthError(
-            {"code": "authorization_header_missing",
-                "description": "Token not found"},
+            {"code": "authorization_header_missing", "description": "Token not found"},
             401,
         )
     elif len(parts) > 2:
