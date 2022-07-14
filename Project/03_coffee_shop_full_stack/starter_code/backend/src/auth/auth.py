@@ -19,13 +19,13 @@ A standardized way to communicate auth failure modes
 
 
 class AuthError(Exception):
+
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
 # Auth Header
-
 """
 @TODO implement get_token_auth_header() method
     it should attempt to get the header from the request
@@ -57,7 +57,10 @@ def get_token_auth_header():
         )
     elif len(parts) == 1:
         raise AuthError(
-            {"code": "authorization_header_missing", "description": "Token not found"},
+            {
+                "code": "authorization_header_missing",
+                "description": "Token not found"
+            },
             401,
         )
     elif len(parts) > 2:
@@ -98,8 +101,10 @@ def check_permissions(permission, payload):
 
     if permission not in payload["permissions"]:
         raise AuthError(
-            {"code": "unauthorized", "description": "Permission not found."}, 403
-        )
+            {
+                "code": "unauthorized",
+                "description": "Permission not found."
+            }, 403)
     return True
 
 
@@ -125,8 +130,10 @@ def verify_decode_jwt(token):
     rsa_key = {}
     if "kid" not in unverified_header:
         raise AuthError(
-            {"code": "invalid_header", "description": "Authorization malformed."}, 401
-        )
+            {
+                "code": "invalid_header",
+                "description": "Authorization malformed."
+            }, 401)
 
     for key in jwks["keys"]:
         if key["kid"] == unverified_header["kid"]:
@@ -151,14 +158,18 @@ def verify_decode_jwt(token):
 
         except jwt.ExpiredSignatureError:
             raise AuthError(
-                {"code": "token_expired", "description": "Token expired."}, 401
-            )
+                {
+                    "code": "token_expired",
+                    "description": "Token expired."
+                }, 401)
 
         except jwt.JWTClaimsError:
             raise AuthError(
                 {
-                    "code": "invalid_claims",
-                    "description": "Incorrect claims. Please, check the audience and issuer.",
+                    "code":
+                    "invalid_claims",
+                    "description":
+                    "Incorrect claims. Please, check the audience and issuer.",
                 },
                 401,
             )
@@ -192,7 +203,9 @@ def verify_decode_jwt(token):
 
 
 def requires_auth(permission=""):
+
     def requires_auth_decorator(f):
+
         @wraps(f)
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
