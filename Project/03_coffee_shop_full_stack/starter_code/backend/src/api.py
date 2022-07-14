@@ -1,17 +1,24 @@
-import os
-from typing_extensions import final
-from flask import Flask, request, jsonify, abort
-from sqlalchemy import exc
 import json
-from flask_cors import CORS
+import os
 
-from .database.models import db_drop_and_create_all, setup_db, Drink, db
-from .auth.auth import AuthError, requires_auth
+from flask import abort
+from flask import Flask
+from flask import jsonify
+from flask import request
+from flask_cors import CORS
+from sqlalchemy import exc
+from typing_extensions import final
+
+from .auth.auth import AuthError
+from .auth.auth import requires_auth
+from .database.models import db
+from .database.models import db_drop_and_create_all
+from .database.models import Drink
+from .database.models import setup_db
 
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
-
 """
 @DONE @TODO uncomment the following line to initialize the database
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
@@ -34,7 +41,9 @@ db_drop_and_create_all()
 @app.route("/drinks")
 def get_drinks():
     try:
-        drinks = [drink.short() for drink in Drink.query.order_by(Drink.id).all()]
+        drinks = [
+            drink.short() for drink in Drink.query.order_by(Drink.id).all()
+        ]
 
         return jsonify({"drinks": drinks, "success": True})
     except:
@@ -56,7 +65,9 @@ def get_drinks():
 def get_drinks_detail(payload):
 
     try:
-        drinks = [drink.long() for drink in Drink.query.order_by(Drink.id).all()]
+        drinks = [
+            drink.long() for drink in Drink.query.order_by(Drink.id).all()
+        ]
 
         return jsonify({"drinks": drinks, "success": True})
 
@@ -193,7 +204,11 @@ Example error handling for unprocessable entity
 
 @app.errorhandler(422)
 def unprocessable(error):
-    return jsonify({"success": False, "error": 422, "message": "Unprocessable"}), 422
+    return jsonify({
+        "success": False,
+        "error": 422,
+        "message": "Unprocessable"
+    }), 422
 
 
 """
@@ -210,13 +225,21 @@ def unprocessable(error):
 
 @app.errorhandler(404)
 def not_found(error):
-    return jsonify({"success": False, "error": 404, "message": "Not Found"}), 404
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "Not Found"
+    }), 404
 
 
 @app.errorhandler(405)
 def method_not_allowed(error):
     return (
-        jsonify({"success": False, "error": 405, "message": "Method Not Allowed"}),
+        jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method Not Allowed"
+        }),
         405,
     )
 
@@ -224,7 +247,11 @@ def method_not_allowed(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return (
-        jsonify({"success": False, "error": 500, "message": "Internal Server Error"}),
+        jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Internal Server Error"
+        }),
         500,
     )
 
@@ -233,8 +260,6 @@ def internal_server_error(error):
 @DONE @TODO implement error handler for 404
     error handler should conform to general task above
 """
-
-
 """
 @DONE TODO implement error handler for AuthError
     error handler should conform to general task above
@@ -244,12 +269,10 @@ def internal_server_error(error):
 @app.errorhandler(AuthError)
 def handle_auth_error(auth_error):
     return (
-        jsonify(
-            {
-                "success": False,
-                "error": auth_error.status_code,
-                "message": auth_error.error["description"],
-            }
-        ),
+        jsonify({
+            "success": False,
+            "error": auth_error.status_code,
+            "message": auth_error.error["description"],
+        }),
         auth_error.status_code,
     )
