@@ -2,7 +2,8 @@ import json
 from functools import wraps
 from urllib.request import urlopen
 
-from flask import _request_ctx_stack, request
+from flask import _request_ctx_stack
+from flask import request
 from jose import jwt
 
 # @TODO Change UTH_DOMAIN
