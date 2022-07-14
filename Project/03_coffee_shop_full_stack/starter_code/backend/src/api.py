@@ -34,7 +34,8 @@ db_drop_and_create_all()
 @app.route("/drinks")
 def get_drinks():
     try:
-        drinks = [drink.short() for drink in Drink.query.order_by(Drink.id).all()]
+        drinks = [drink.short()
+                  for drink in Drink.query.order_by(Drink.id).all()]
 
         return jsonify({"drinks": drinks, "success": True})
     except:
@@ -56,7 +57,8 @@ def get_drinks():
 def get_drinks_detail(payload):
 
     try:
-        drinks = [drink.long() for drink in Drink.query.order_by(Drink.id).all()]
+        drinks = [drink.long()
+                  for drink in Drink.query.order_by(Drink.id).all()]
 
         return jsonify({"drinks": drinks, "success": True})
 
@@ -216,7 +218,8 @@ def not_found(error):
 @app.errorhandler(405)
 def method_not_allowed(error):
     return (
-        jsonify({"success": False, "error": 405, "message": "Method Not Allowed"}),
+        jsonify({"success": False, "error": 405,
+                "message": "Method Not Allowed"}),
         405,
     )
 
@@ -224,7 +227,8 @@ def method_not_allowed(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return (
-        jsonify({"success": False, "error": 500, "message": "Internal Server Error"}),
+        jsonify({"success": False, "error": 500,
+                "message": "Internal Server Error"}),
         500,
     )
 
