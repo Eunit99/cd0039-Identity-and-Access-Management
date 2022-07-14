@@ -1,8 +1,9 @@
 import json
-from flask import request, _request_ctx_stack
 from functools import wraps
-from jose import jwt
 from urllib.request import urlopen
+
+from flask import _request_ctx_stack, request
+from jose import jwt
 
 # @TODO Change UTH_DOMAIN
 AUTH0_DOMAIN = "dev-bg8l2uqc.us.auth0.com"

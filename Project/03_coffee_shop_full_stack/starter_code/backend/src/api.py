@@ -1,12 +1,13 @@
-import os
-from typing_extensions import final
-from flask import Flask, request, jsonify, abort
-from sqlalchemy import exc
 import json
-from flask_cors import CORS
+import os
 
-from .database.models import db_drop_and_create_all, setup_db, Drink, db
+from flask import Flask, abort, jsonify, request
+from flask_cors import CORS
+from sqlalchemy import exc
+from typing_extensions import final
+
 from .auth.auth import AuthError, requires_auth
+from .database.models import Drink, db, db_drop_and_create_all, setup_db
 
 app = Flask(__name__)
 setup_db(app)
