@@ -1,5 +1,4 @@
 import os
-from typing_extensions import final
 from flask import Flask, request, jsonify, abort
 from sqlalchemy import exc
 import json
