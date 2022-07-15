@@ -51,7 +51,7 @@ def get_drinks():
 """
 
 
-@app.route("/drinks-details", methods=["GET"])
+@app.route("/drinks-detail", methods=["GET"])
 @requires_auth("get:drinks-detail")
 def get_drinks_detail(payload):
 
